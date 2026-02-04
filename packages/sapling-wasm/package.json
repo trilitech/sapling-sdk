@@ -1,5 +1,5 @@
 {
-  "name": "@airgap/sapling-wasm",
+  "name": "@tezos-x/sapling-wasm",
   "author": "Papers.ch <contact@papers.ch>",
   "version": "0.0.10",
   "homepage": "https://www.airgap.it",

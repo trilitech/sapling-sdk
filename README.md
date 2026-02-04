@@ -1,6 +1,6 @@
 # AirGap Sapling
 
-[![npm](https://img.shields.io/npm/v/@airgap/sapling-wasm.svg?colorB=brightgreen)](https://www.npmjs.com/package/@airgap/sapling-wasm)
+[![npm](https://img.shields.io/npm/v/@tezos-x/sapling-wasm.svg?colorB=brightgreen)](https://www.npmjs.com/package/@tezos-x/sapling-wasm)
 [![jitpack](https://img.shields.io/jitpack/v/github/airgap-it/airgap-sapling)](https://jitpack.io/#airgap-it/airgap-sapling)
 [![spm](https://img.shields.io/github/v/tag/airgap-it/airgap-sapling?include_prereleases&label=spm)](https://github.com/airgap-it/airgap-sapling/releases)
 
@@ -21,15 +21,15 @@ The project is divided into the following packages:
 To add JS AirGap Sapling library into your project run:
 
 ```bash
-$ npm install --save @airgap/sapling-wasm
+$ npm install --save @tezos-x/sapling-wasm
 ```
 
 ### Examples
 
 ```ts
 import * as bip39 from 'bip39'
-import * as sapling from '@airgap/sapling-wasm'
-import { SaplingPaymentAddress } from '@airgap/sapling-wasm'
+import * as sapling from '@tezos-x/sapling-wasm'
+import { SaplingPaymentAddress } from '@tezos-x/sapling-wasm'
 
 const mnemonic: string = bip39.generateMnemonic()
 const seed: Buffer = await bip39.mnemonicToSeed(mnemonic, '')

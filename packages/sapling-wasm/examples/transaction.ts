@@ -6,13 +6,13 @@
  * FIXME: create a valid transaction
  */
 
-import * as sapling from '@airgap/sapling-wasm'
+import * as sapling from '@tezos-x/sapling-wasm'
 import {
   SaplingOutputDescription,
   SaplingPaymentAddress,
   SaplingSpendDescription,
   SaplingUnsignedSpendDescription
-} from '@airgap/sapling-wasm'
+} from '@tezos-x/sapling-wasm'
 import axios, { AxiosResponse } from 'axios'
 import * as bip39 from 'bip39'
 import * as BN from 'bn.js'
