@@ -226,7 +226,7 @@ function create_framework () {
     module_map_path=$(ios_target "$1")/Headers/module.modulemap
     if printf "%s\n" \
       "module SaplingFFI {" \
-      "$(echo -e "\theader \"airgap_sapling.h\"")" \
+      "$(echo -e "\theader \"sapling.h\"")" \
       "$(echo -e "\texport *")" \
       "}" > "$XCFRAMEWORK_DIR/$module_map_path"; then
       echo -e "  \xE2\x9C\x94 $1 module map ($module_map_path)"

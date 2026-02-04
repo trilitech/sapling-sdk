@@ -1,5 +1,5 @@
 {
-  "name": "airgap-sapling",
+  "name": "sapling",
   "version": "0.0.0",
   "private": true,
   "scripts": {

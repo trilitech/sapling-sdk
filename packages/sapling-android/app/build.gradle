@@ -48,7 +48,7 @@ android {
 
     cargo {
         module = '../../sapling'
-        libname = 'libairgap_sapling'
+        libname = 'libsapling'
         targets = ['arm', 'arm64', 'x86', 'x86_64']
         profile = 'release'
         prebuiltToolchains = true
