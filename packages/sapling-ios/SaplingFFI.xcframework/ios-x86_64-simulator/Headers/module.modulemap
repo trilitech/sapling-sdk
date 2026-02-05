@@ -1,4 +1,0 @@
-module SaplingFFI {
-	header "airgap_sapling.h"
-	export *
-}

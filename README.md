@@ -1,8 +1,6 @@
-# AirGap Sapling
+# Sapling
 
-[![npm](https://img.shields.io/npm/v/@airgap/sapling-wasm.svg?colorB=brightgreen)](https://www.npmjs.com/package/@airgap/sapling-wasm)
-[![jitpack](https://img.shields.io/jitpack/v/github/airgap-it/airgap-sapling)](https://jitpack.io/#airgap-it/airgap-sapling)
-[![spm](https://img.shields.io/github/v/tag/airgap-it/airgap-sapling?include_prereleases&label=spm)](https://github.com/airgap-it/airgap-sapling/releases)
+[![npm](https://img.shields.io/npm/v/@tezos-x/sapling-wasm.svg?colorB=brightgreen)](https://www.npmjs.com/package/@tezos-x/sapling-wasm)
 
 Wasm, Android and iOS wrappers around [Zcash Rust crates](https://github.com/zcash/librustzcash).
 
@@ -18,18 +16,18 @@ The project is divided into the following packages:
 
 ### Install
 
-To add JS AirGap Sapling library into your project run:
+To add the Sapling JS library into your project run:
 
 ```bash
-$ npm install --save @airgap/sapling-wasm
+$ npm install --save @tezos-x/sapling-wasm
 ```
 
 ### Examples
 
 ```ts
 import * as bip39 from 'bip39'
-import * as sapling from '@airgap/sapling-wasm'
-import { SaplingPaymentAddress } from '@airgap/sapling-wasm'
+import * as sapling from '@tezos-x/sapling-wasm'
+import { SaplingPaymentAddress } from '@tezos-x/sapling-wasm'
 
 const mnemonic: string = bip39.generateMnemonic()
 const seed: Buffer = await bip39.mnemonicToSeed(mnemonic, '')
@@ -57,7 +55,7 @@ More advanced examples can be found in `js/examples`.
 
 ### Install
 
-To add Android AirGap Sapling library into your project:
+To add the Sapling Android library into your project:
 
 1. Ensure [Android NDK](https://developer.android.com/ndk) is supported in your project. 
 
@@ -71,24 +69,18 @@ To add Android AirGap Sapling library into your project:
   }
   ```
 
-1. Add the dependency:
-  ```groovy
-  def saplingVersion = "x.y.z"
-
-  implementation "com.github.airgap-it:airgap-sapling:$saplingVersion"
-  ```
 
 ## Sapling iOS
 
 ### Install
 
-To add iOS AirGap Sapling into your project, add the package dependency:
+To add Sapling iOS into your project, add the package dependency:
 
 #### Xcode
 
-Open the `Add Package Dependency` window (as described in [the official guide](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app)) and enter the AirGap Sapling GitHub repository URL:
+Open the `Add Package Dependency` window (as described in [the official guide](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app)) and enter the Sapling GitHub repository URL:
 ```
-https://github.com/airgap-it/airgap-sapling
+https://github.com/trilitech/sapling-sdk
 ```
 
 #### Package.swift file
@@ -96,6 +88,6 @@ https://github.com/airgap-it/airgap-sapling
 Add the following dependency in your `Package.swift` file:
 
 ```swift
-.package(url: "https://github.com/airgap-it/airgap-sapling", from: "x.y.z")
+.package(url: "https://github.com/trilitech/sapling-sdk", from: "x.y.z")
 ```
 

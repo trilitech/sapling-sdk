@@ -1,23 +1,23 @@
-# AirGap Sapling Wasm
+# Sapling Wasm
 
-[![npm](https://img.shields.io/npm/v/@airgap/sapling-wasm.svg?colorB=brightgreen)](https://www.npmjs.com/package/@airgap/sapling-wasm)
+[![npm](https://img.shields.io/npm/v/@tezos-x/sapling-wasm.svg?colorB=brightgreen)](https://www.npmjs.com/package/@tezos-x/sapling-wasm)
 
 A Wasm wrapper around [Zcash Rust crates](https://github.com/zcash/librustzcash).
 
 ## Install
 
-To add JS AirGap Sapling library into your project run:
+To add JS Sapling library into your project run:
 
 ```bash
-$ npm install --save @airgap/sapling-wasm
+$ npm install --save @tezos-x/sapling-wasm
 ```
 
 ## Examples
 
 ```ts
 import * as bip39 from 'bip39'
-import * as sapling from '@airgap/sapling-wasm'
-import { SaplingPaymentAddress } from '@airgap/sapling-wasm'
+import * as sapling from '@tezos-x/sapling-wasm'
+import { SaplingPaymentAddress } from '@tezos-x/sapling-wasm'
 
 const mnemonic: string = bip39.generateMnemonic()
 const seed: Buffer = await bip39.mnemonicToSeed(mnemonic, '')

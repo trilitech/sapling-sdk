@@ -4,8 +4,8 @@
  * Call `npm run build` before running this example.
  */
 
-import * as sapling from '@airgap/sapling-wasm'
-import { SaplingPaymentAddress } from '@airgap/sapling-wasm'
+import * as sapling from '@tezos-x/sapling-wasm'
+import { SaplingPaymentAddress } from '@tezos-x/sapling-wasm'
 import * as bip39 from 'bip39'
 
 async function createNextPaymentAddress(): Promise<SaplingPaymentAddress> {

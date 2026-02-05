@@ -1,5 +1,5 @@
-#ifndef AIRGAP_SAPLING_H
-#define AIRGAP_SAPLING_H
+#ifndef SAPLING_H
+#define SAPLING_H
 
 #include "stdlib.h"
 #include "stddef.h"
@@ -254,4 +254,4 @@ extern "C" {
 };
 #endif // __cplusplus
 
-#endif // AIRGAP_SAPLING_H
+#endif // SAPLING_H

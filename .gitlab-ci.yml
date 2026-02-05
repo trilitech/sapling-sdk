@@ -41,7 +41,7 @@ build_android:
 #build_ios:
 #  stage: build
 #  script:
-#    - xcodebuild -scheme AirGapSapling -destination generic/platform=iOS Simulator,arch=x86_64
+#    - xcodebuild -scheme Sapling -destination generic/platform=iOS Simulator,arch=x86_64
 
 check:
   stage: check
