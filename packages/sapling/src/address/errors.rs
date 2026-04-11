@@ -15,7 +15,9 @@ impl DetailedError for SaplingAddressError {
 
         match self {
             DiversifierSpaceExhausted => String::from("diversifier space is exhausted"),
-            InvalidAddressLength(len) => format!("invalid address length, expected 43, got {}", len),
+            InvalidAddressLength(len) => {
+                format!("invalid address length, expected 43, got {}", len)
+            }
             SerializationFailed(err) => err.to_string(),
         }
     }
@@ -28,8 +30,10 @@ impl PartialEq for SaplingAddressError {
         match (self, other) {
             (DiversifierSpaceExhausted, DiversifierSpaceExhausted) => true,
             (InvalidAddressLength(size), InvalidAddressLength(other_size)) => size == other_size,
-            (SerializationFailed(err), SerializationFailed(other_err)) => err.to_string() == other_err.to_string(),
-            _ => false
+            (SerializationFailed(err), SerializationFailed(other_err)) => {
+                err.to_string() == other_err.to_string()
+            }
+            _ => false,
         }
     }
 }
@@ -45,7 +49,9 @@ impl DetailedError for IndexedAddressError {
         use IndexedAddressError::*;
 
         match self {
-            InvalidAddressLength(len) => format!("invalid address length, expected 43, got {}", len),
+            InvalidAddressLength(len) => {
+                format!("invalid address length, expected 43, got {}", len)
+            }
             SerializationFailed(err) => err.to_string(),
         }
     }
@@ -57,8 +63,10 @@ impl PartialEq for IndexedAddressError {
 
         match (self, other) {
             (InvalidAddressLength(size), InvalidAddressLength(other_size)) => size == other_size,
-            (SerializationFailed(err), SerializationFailed(other_err)) => err.to_string() == other_err.to_string(),
-            _ => false
+            (SerializationFailed(err), SerializationFailed(other_err)) => {
+                err.to_string() == other_err.to_string()
+            }
+            _ => false,
         }
     }
 }

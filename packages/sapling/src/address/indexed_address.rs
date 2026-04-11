@@ -13,7 +13,10 @@ use crate::common::utils::assert_utils::assert_value_or_error;
 pub struct IndexedAddress(pub [u8; 11], pub PaymentAddress);
 
 impl IndexedAddress {
-    pub fn new(diversifier_index: DiversifierIndex, payment_address: PaymentAddress) -> IndexedAddress {
+    pub fn new(
+        diversifier_index: DiversifierIndex,
+        payment_address: PaymentAddress,
+    ) -> IndexedAddress {
         IndexedAddress(diversifier_index.0, payment_address)
     }
 }
@@ -33,7 +36,8 @@ impl Serializable<Vec<u8>, SaplingError> for IndexedAddress {
 
         let address = &self.1.serialize()?;
 
-        bytes.write_all(&self.0)
+        bytes
+            .write_all(&self.0)
             .and_then(|_| bytes.write_all(address))
             .map_err(IndexedAddressError::SerializationFailed)
             .map_err(SaplingError::caused_by)?;

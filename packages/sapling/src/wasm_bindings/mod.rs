@@ -1,3 +1,7 @@
+#![allow(unused_variables)]
+// `#[wasm_bindgen(catch)]` currently trips false-positive unused-variable warnings
+// under our strict warning gate. Keep the allowance scoped to the binding shims.
+
 pub mod authorizing_key;
 pub mod commitment;
 pub mod init;

@@ -12,7 +12,8 @@ pub fn prepare_proof_parameters(spend_params: &[u8], output_params: &[u8]) -> Zc
 
 pub fn prepare_zkproof(proof: Proof<Bls12>) -> Result<[u8; GROTH_PROOF_SIZE], SaplingError> {
     let mut zkproof = [0u8; GROTH_PROOF_SIZE];
-    proof.write(&mut zkproof[..])
+    proof
+        .write(&mut zkproof[..])
         .map_err(ProofError::WriteFailed)
         .map_err(SaplingError::caused_by)?;
 

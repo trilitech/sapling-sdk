@@ -12,7 +12,7 @@ impl DetailedError for SpendingKeyError {
     fn details(&self) -> String {
         match self {
             SpendingKeyError::WriteFailed(err) => err.to_string(),
-            SpendingKeyError::ReadFailed(err) => err.to_string()
+            SpendingKeyError::ReadFailed(err) => err.to_string(),
         }
     }
 }
@@ -20,9 +20,13 @@ impl DetailedError for SpendingKeyError {
 impl PartialEq for SpendingKeyError {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
-            (SpendingKeyError::WriteFailed(err), SpendingKeyError::WriteFailed(other_err)) => err.to_string() == other_err.to_string(),
-            (SpendingKeyError::ReadFailed(err), SpendingKeyError::ReadFailed(other_err)) => err.to_string() == other_err.to_string(),
-            _ => false
+            (SpendingKeyError::WriteFailed(err), SpendingKeyError::WriteFailed(other_err)) => {
+                err.to_string() == other_err.to_string()
+            }
+            (SpendingKeyError::ReadFailed(err), SpendingKeyError::ReadFailed(other_err)) => {
+                err.to_string() == other_err.to_string()
+            }
+            _ => false,
         }
     }
 }

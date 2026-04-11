@@ -10,7 +10,9 @@ pub fn wasm_compute_cmu(address: &[u8], value: &str, rcm: &[u8]) -> Result<Vec<u
     wasm_init_lib();
 
     let address: PaymentAddress = js_deserialize(address)?;
-    let value: u64 = value.parse().or_else(|_| js_result_from("computeCommitment: invalid value"))?;
+    let value: u64 = value
+        .parse()
+        .or_else(|_| js_result_from("computeCommitment: invalid value"))?;
     let rcm: jubjub::Scalar = js_deserialize(rcm)?;
 
     let cmu = create_note(&address, value, rcm).map(|note| note.cmu());

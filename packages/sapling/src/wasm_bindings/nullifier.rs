@@ -7,14 +7,24 @@ use crate::transaction::compute_nullifier;
 use crate::wasm_bindings::init::wasm_init_lib;
 
 #[wasm_bindgen(catch, js_name = "computeNullifier")]
-pub fn wasm_compute_nullifier_with_xfvk(xfvk: &[u8], address: &[u8], value: &str, rcm: &[u8], position: &str) -> Result<Vec<u8>, JsValue> {
+pub fn wasm_compute_nullifier_with_xfvk(
+    xfvk: &[u8],
+    address: &[u8],
+    value: &str,
+    rcm: &[u8],
+    position: &str,
+) -> Result<Vec<u8>, JsValue> {
     wasm_init_lib();
-    
+
     let xfvk: ExtendedFullViewingKey = js_deserialize(xfvk)?;
     let payment_address: PaymentAddress = js_deserialize(address)?;
-    let value: u64 = value.parse().or_else(|_| js_result_from("computeNullifier: invalid value"))?;
+    let value: u64 = value
+        .parse()
+        .or_else(|_| js_result_from("computeNullifier: invalid value"))?;
     let rcm: jubjub::Scalar = js_deserialize(rcm)?;
-    let position: u64 = position.parse().or_else(|_| js_result_from("computeNullifier: invalid position"))?;
+    let position: u64 = position
+        .parse()
+        .or_else(|_| js_result_from("computeNullifier: invalid position"))?;
 
     let nullifier = compute_nullifier(&xfvk.fvk.vk, &payment_address, value, rcm, position)
         .map_err(|err| JsValue::from(err.to_string()))?;

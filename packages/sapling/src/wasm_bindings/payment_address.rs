@@ -1,12 +1,14 @@
 use std::convert::TryInto;
 
-use wasm_bindgen::JsValue;
 use wasm_bindgen::prelude::*;
+use wasm_bindgen::JsValue;
 use zcash_primitives::primitives::{Diversifier, PaymentAddress};
 use zcash_primitives::zip32::ExtendedFullViewingKey;
 
 use crate::address::{get_ivk_address, get_next_xfvk_address, get_xfvk_address};
-use crate::common::utils::wasm_utils::{js_deserialize, js_result_from, js_serialize, js_serialize_res};
+use crate::common::utils::wasm_utils::{
+    js_deserialize, js_result_from, js_serialize, js_serialize_res,
+};
 use crate::wasm_bindings::init::wasm_init_lib;
 
 #[wasm_bindgen(catch, js_name = "defaultPaymentAddressFromXfvk")]
@@ -23,8 +25,9 @@ pub fn wasm_default_payment_address_from_xfvk(xfvk: &[u8]) -> Result<Vec<u8>, Js
 pub fn wasm_next_payment_address_from_xfvk(xfvk: &[u8], index: &[u8]) -> Result<Vec<u8>, JsValue> {
     wasm_init_lib();
 
-    let index: [u8; 11] = index.try_into()
-        .or_else(|_| js_result_from("nextPaymentAddressFromXfvk: index must be an array of 11 bytes"))?;
+    let index: [u8; 11] = index.try_into().or_else(|_| {
+        js_result_from("nextPaymentAddressFromXfvk: index must be an array of 11 bytes")
+    })?;
 
     let xfvk: ExtendedFullViewingKey = js_deserialize(xfvk)?;
     let xfvk_address = get_next_xfvk_address(&xfvk, index);
@@ -36,8 +39,9 @@ pub fn wasm_next_payment_address_from_xfvk(xfvk: &[u8], index: &[u8]) -> Result<
 pub fn wasm_payment_address_from_xfvk(xfvk: &[u8], index: &[u8]) -> Result<Vec<u8>, JsValue> {
     wasm_init_lib();
 
-    let index: [u8; 11] = index.try_into()
-        .or_else(|_| js_result_from("paymentAddressFromXfvk: index must be an array of 11 bytes"))?;
+    let index: [u8; 11] = index.try_into().or_else(|_| {
+        js_result_from("paymentAddressFromXfvk: index must be an array of 11 bytes")
+    })?;
 
     let xfvk: ExtendedFullViewingKey = js_deserialize(xfvk)?;
     let xfvk_address = get_xfvk_address(&xfvk, Some(index));
@@ -51,7 +55,8 @@ pub fn wasm_payment_address_from_ivk(ivk: &[u8], diversifier: &[u8]) -> Result<V
 
     let ivk: jubjub::Scalar = js_deserialize(ivk)?;
 
-    let diversifier: [u8; 11] = diversifier.try_into()
+    let diversifier: [u8; 11] = diversifier
+        .try_into()
         .or_else(|_| js_result_from("paymentAddressfromIvk: index must be an array of 11 bytes"))?;
     let diversifier = Diversifier(diversifier);
 

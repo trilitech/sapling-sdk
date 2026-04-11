@@ -1,4 +1,2 @@
-pub use errors::SpendingKeyError;
-
-mod xsk;
 mod errors;
+mod xsk;

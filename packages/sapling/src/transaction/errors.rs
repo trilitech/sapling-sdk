@@ -1,5 +1,5 @@
-use std::io;
 use crate::common::errors::DetailedError;
+use std::io;
 
 #[derive(Debug)]
 pub enum SignatureError {
@@ -49,7 +49,7 @@ impl DetailedError for MerklePathError {
 
 #[derive(Debug, PartialEq)]
 pub enum NoteError {
-    NoteEmpty
+    NoteEmpty,
 }
 
 impl DetailedError for NoteError {
@@ -57,7 +57,7 @@ impl DetailedError for NoteError {
         use NoteError::*;
 
         match self {
-            NoteEmpty => String::from("Could not create a note from a payment address")
+            NoteEmpty => String::from("Could not create a note from a payment address"),
         }
     }
 }

@@ -10,13 +10,13 @@ impl Serializable<Vec<u8>, SaplingError> for jubjub::Scalar {
                 let mut bytes = [0u8; 64];
                 bytes.copy_from_slice(&serialized[..]);
                 Ok(jubjub::Scalar::from_bytes_wide(&bytes))
-            },
+            }
             32 => {
                 let mut bytes = [0u8; 32];
                 bytes.copy_from_slice(&serialized[..]);
                 ct_unwrap(jubjub::Scalar::from_bytes(&bytes)).ok_or_else(SaplingError::new)
-            },
-            _ => Err(SaplingError::new())
+            }
+            _ => Err(SaplingError::new()),
         }
     }
 
@@ -26,19 +26,22 @@ impl Serializable<Vec<u8>, SaplingError> for jubjub::Scalar {
 }
 
 impl Serializable<Vec<u8>, SaplingError> for bls12_381::Scalar {
-    fn deserialize(serialized: Vec<u8>) -> Result<Self, SaplingError> where Self: Sized {
+    fn deserialize(serialized: Vec<u8>) -> Result<Self, SaplingError>
+    where
+        Self: Sized,
+    {
         match serialized.len() {
             64 => {
                 let mut bytes = [0u8; 64];
                 bytes.copy_from_slice(&serialized[..]);
                 Ok(bls12_381::Scalar::from_bytes_wide(&bytes))
-            },
+            }
             32 => {
                 let mut bytes = [0u8; 32];
                 bytes.copy_from_slice(&serialized[..]);
                 ct_unwrap(bls12_381::Scalar::from_bytes(&bytes)).ok_or_else(SaplingError::new)
-            },
-            _ => Err(SaplingError::new())
+            }
+            _ => Err(SaplingError::new()),
         }
     }
 
@@ -60,7 +63,10 @@ impl Serializable<Vec<u8>, SaplingError> for jubjub::ExtendedPoint {
 }
 
 impl Serializable<Vec<u8>, SaplingError> for jubjub::SubgroupPoint {
-    fn deserialize(serialized: Vec<u8>) -> Result<Self, SaplingError> where Self: Sized {
+    fn deserialize(serialized: Vec<u8>) -> Result<Self, SaplingError>
+    where
+        Self: Sized,
+    {
         let mut bytes = [0u8; 32];
         bytes.copy_from_slice(&serialized[..]);
         ct_unwrap(jubjub::SubgroupPoint::from_bytes(&bytes)).ok_or_else(SaplingError::new)

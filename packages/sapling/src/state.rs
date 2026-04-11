@@ -13,15 +13,23 @@ impl State {
     }
 
     pub fn set_initialized() {
-        unsafe { STATE.is_initialized = true; }
+        unsafe {
+            STATE.is_initialized = true;
+        }
     }
 
     pub fn proof_params() -> Result<&'static ZcashParameters, SaplingError> {
-        unsafe { STATE.proof_params.as_ref().ok_or_else(|| SaplingError::caused_by("sapling parameters have not been initialized")) }
+        unsafe {
+            STATE.proof_params.as_ref().ok_or_else(|| {
+                SaplingError::caused_by("sapling parameters have not been initialized")
+            })
+        }
     }
 
     pub fn set_proof_params(params: ZcashParameters) {
-        unsafe { STATE.proof_params = Some(params); }
+        unsafe {
+            STATE.proof_params = Some(params);
+        }
     }
 }
 
