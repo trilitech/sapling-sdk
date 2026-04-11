@@ -1,39 +1,31 @@
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::OnceLock;
+
 use zcash_proofs::ZcashParameters;
 
 use crate::common::errors::{CausedBy, SaplingError};
 
-pub struct State {
-    is_initialized: bool,
-    proof_params: Option<ZcashParameters>,
-}
+static IS_INITIALIZED: AtomicBool = AtomicBool::new(false);
+static PROOF_PARAMS: OnceLock<ZcashParameters> = OnceLock::new();
+
+pub struct State;
 
 impl State {
     pub fn is_initialized() -> bool {
-        unsafe { STATE.is_initialized }
+        IS_INITIALIZED.load(Ordering::Acquire)
     }
 
     pub fn set_initialized() {
-        unsafe {
-            STATE.is_initialized = true;
-        }
+        IS_INITIALIZED.store(true, Ordering::Release);
     }
 
     pub fn proof_params() -> Result<&'static ZcashParameters, SaplingError> {
-        unsafe {
-            STATE.proof_params.as_ref().ok_or_else(|| {
-                SaplingError::caused_by("sapling parameters have not been initialized")
-            })
-        }
+        PROOF_PARAMS
+            .get()
+            .ok_or_else(|| SaplingError::caused_by("sapling parameters have not been initialized"))
     }
 
     pub fn set_proof_params(params: ZcashParameters) {
-        unsafe {
-            STATE.proof_params = Some(params);
-        }
+        let _ = PROOF_PARAMS.set(params);
     }
 }
-
-static mut STATE: State = State {
-    is_initialized: false,
-    proof_params: None,
-};
