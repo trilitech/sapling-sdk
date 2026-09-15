@@ -2,7 +2,7 @@
   "name": "@tezos-x/sapling-wasm",
   "author": "Papers.ch <contact@papers.ch>",
   "license": "MIT",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/trilitech/sapling-sdk"
