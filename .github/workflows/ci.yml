@@ -1,0 +1,131 @@
+name: CI
+
+# Translated from the legacy .gitlab-ci.yml (build/check/test/publish stages), which is
+# no longer connected to any runner since the repo moved to GitHub.
+#
+# Differences from the GitLab pipeline, by design:
+# - No custom Docker image is built and passed between stages; each job installs the
+#   toolchain it needs directly on the runner. Simpler, and doesn't require a container
+#   registry.
+# - The two manual publish jobs (`publish_wasm` / `publish_wasm_beta`) are combined into
+#   one `workflow_dispatch` trigger with a `release_type` choice, since a single GitHub
+#   Actions run can't offer two independent manual buttons the way GitLab stages can.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: "npm release to publish (leave as 'none' to just build/test)"
+        required: true
+        type: choice
+        options:
+          - none
+          - stable
+          - beta
+        default: none
+
+jobs:
+  build:
+    name: Build & test (sapling-wasm)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Install JS dependencies
+        run: npm ci
+
+      - name: Check package versions are in sync
+        # Mirrors `check` stage's `allow_failure: true` in the old pipeline.
+        continue-on-error: true
+        run: ./scripts/version.sh --check
+
+      - name: Run Rust unit tests
+        run: cargo test --manifest-path packages/sapling/Cargo.toml
+
+      - name: Build sapling-wasm
+        run: npm run build:prod
+
+      - name: Run JS characterization tests
+        run: npm test
+
+  build_android:
+    name: Build (sapling-android)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build android image
+        run: |
+          cp .dockerignore .dockerignore.tmp
+          cp containers/android/.dockerignore_android .dockerignore
+          docker build -f containers/android/Dockerfile -t sapling-android:ci .
+          mv .dockerignore.tmp .dockerignore
+
+  publish_wasm:
+    name: Publish sapling-wasm (stable)
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.release_type == 'stable' && github.ref == 'refs/heads/master'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Install JS dependencies
+        run: npm ci
+
+      - name: Build sapling-wasm
+        run: npm run build:prod
+
+      - name: Publish to npm
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        run: ./scripts/npm/publish.sh
+
+  publish_wasm_beta:
+    name: Publish sapling-wasm (beta)
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.release_type == 'beta'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Install JS dependencies
+        run: npm ci
+
+      - name: Build sapling-wasm
+        run: npm run build:prod
+
+      - name: Publish beta to npm
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        run: ./scripts/npm/publish-beta-only.sh
