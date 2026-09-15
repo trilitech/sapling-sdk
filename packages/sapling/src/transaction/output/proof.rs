@@ -13,7 +13,13 @@ pub fn create_output_proof(
     output_details: OutputDetails,
     esk: jubjub::Scalar,
     rcm: jubjub::Scalar,
-    proving_key: &Parameters<Bls12>
+    proving_key: &Parameters<Bls12>,
 ) -> (Proof<Bls12>, jubjub::ExtendedPoint) {
-    ctx.output_proof(esk, output_details.to_address, rcm, output_details.value, proving_key)
+    ctx.output_proof(
+        esk,
+        output_details.to_address,
+        rcm,
+        output_details.value,
+        proving_key,
+    )
 }

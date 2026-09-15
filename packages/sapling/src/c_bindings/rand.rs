@@ -1,7 +1,7 @@
-use libc::{c_uchar, size_t};
 use crate::c_init_lib;
+use libc::{c_uchar, size_t};
 
-use crate::common::utils::c_utils::{c_serialize, c_ptr_catch_result};
+use crate::common::utils::c_utils::{c_ptr_catch_result, c_serialize};
 use crate::transaction::rand_scalar;
 
 #[no_mangle]

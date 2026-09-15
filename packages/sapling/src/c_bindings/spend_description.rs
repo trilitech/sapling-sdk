@@ -11,9 +11,14 @@ use zcash_proofs::sapling::SaplingProvingContext;
 use zcash_proofs::ZcashParameters;
 
 use crate::common::errors::{CausedBy, SaplingError};
-use crate::common::utils::c_utils::{c_dereference, c_deserialize, c_deserialize_slice, c_serialize_res, c_ptr_catch_result};
+use crate::common::utils::c_utils::{
+    c_dereference, c_deserialize, c_deserialize_slice, c_ptr_catch_result, c_serialize_res,
+};
+use crate::transaction::{
+    prepare_spend_description, sign_spend_description, SpendDetails, SpendParameters,
+    UnsignedSpendDescription,
+};
 use crate::{c_init_lib, State};
-use crate::transaction::{prepare_spend_description, sign_spend_description, SpendDetails, SpendParameters, UnsignedSpendDescription};
 
 #[allow(clippy::too_many_arguments)]
 #[no_mangle]
@@ -52,12 +57,19 @@ pub extern "C" fn c_spend_description_from_xsk(
 
         let spend_description = prepare_spend_description(
             ctx,
-            SpendDetails { from_pak: &xsk.expsk.proof_generation_key(), to_address: &payment_address, value },
+            SpendDetails {
+                from_pak: &xsk.expsk.proof_generation_key(),
+                to_address: &payment_address,
+                value,
+            },
             rcm,
             ar,
             anchor,
             merkle_path,
-            SpendParameters { proving_key, verifying_key },
+            SpendParameters {
+                proving_key,
+                verifying_key,
+            },
         );
 
         unsafe { c_serialize_res(spend_description, description_len) }
@@ -101,12 +113,19 @@ pub extern "C" fn c_spend_description_from_pak(
 
         let spend_description = prepare_spend_description(
             ctx,
-            SpendDetails { from_pak: &pak, to_address: &payment_address, value },
+            SpendDetails {
+                from_pak: &pak,
+                to_address: &payment_address,
+                value,
+            },
             rcm,
             ar,
             anchor,
             merkle_path,
-            SpendParameters { proving_key, verifying_key },
+            SpendParameters {
+                proving_key,
+                verifying_key,
+            },
         );
 
         unsafe { c_serialize_res(spend_description, description_len) }
@@ -128,12 +147,18 @@ pub extern "C" fn c_sign_spend_description_with_xsk(
     c_init_lib();
 
     c_ptr_catch_result(|| {
-        let spend_description: UnsignedSpendDescription = unsafe { c_deserialize(spend_description, spend_description_len) }?;
+        let spend_description: UnsignedSpendDescription =
+            unsafe { c_deserialize(spend_description, spend_description_len) }?;
         let xks: ExtendedSpendingKey = unsafe { c_deserialize(xsk, xsk_len) }?;
         let ar: jubjub::Scalar = unsafe { c_deserialize(ar, ar_len) }?;
 
-        let sighash: [u8; 32] = unsafe { c_deserialize_slice(sighash, sighash_len) }.try_into()
-            .map_err(|_| SaplingError::caused_by("signSpendDescriptionWithXsk: sighash must be an array of 32 bytes"))?;
+        let sighash: [u8; 32] = unsafe { c_deserialize_slice(sighash, sighash_len) }
+            .try_into()
+            .map_err(|_| {
+                SaplingError::caused_by(
+                    "signSpendDescriptionWithXsk: sighash must be an array of 32 bytes",
+                )
+            })?;
 
         let spend_description = sign_spend_description(spend_description, xks, ar, sighash);
 

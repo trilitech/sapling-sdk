@@ -10,9 +10,13 @@ use zcash_proofs::sapling::SaplingProvingContext;
 use zcash_proofs::ZcashParameters;
 
 use crate::common::errors::{CausedBy, SaplingError};
-use crate::common::utils::c_utils::{c_dereference, c_deserialize, c_deserialize_slice, c_serialize_res, c_ptr_catch_result};
+use crate::common::utils::c_utils::{
+    c_dereference, c_deserialize, c_deserialize_slice, c_ptr_catch_result, c_serialize_res,
+};
+use crate::transaction::{
+    derive_epk, prepare_output_description, prepare_partial_output_description, OutputDetails,
+};
 use crate::{c_init_lib, State};
-use crate::transaction::{derive_epk, OutputDetails, prepare_output_description, prepare_partial_output_description};
 
 #[no_mangle]
 pub extern "C" fn c_output_description_from_xfvk(
@@ -41,7 +45,10 @@ pub extern "C" fn c_output_description_from_xfvk(
         let output_description = prepare_output_description(
             ctx,
             xfvk.fvk.ovk,
-            OutputDetails { to_address: address, value },
+            OutputDetails {
+                to_address: address,
+                value,
+            },
             rcm,
             None,
             proving_key,
@@ -79,7 +86,10 @@ pub extern "C" fn c_output_description_from_xfvk_with_memo(
         let output_description = prepare_output_description(
             ctx,
             xfvk.fvk.ovk,
-            OutputDetails { to_address: address, value },
+            OutputDetails {
+                to_address: address,
+                value,
+            },
             rcm,
             Some(memo),
             proving_key,
@@ -114,7 +124,10 @@ pub extern "C" fn c_output_description_from_ovk(
         let output_description = prepare_output_description(
             ctx,
             ovk,
-            OutputDetails { to_address: address, value },
+            OutputDetails {
+                to_address: address,
+                value,
+            },
             rcm,
             None,
             proving_key,
@@ -148,7 +161,10 @@ pub extern "C" fn c_partial_output_description(
 
         let output_description = prepare_partial_output_description(
             ctx,
-            OutputDetails { to_address: address, value },
+            OutputDetails {
+                to_address: address,
+                value,
+            },
             rcm,
             esk,
             proving_key,
@@ -167,8 +183,11 @@ pub extern "C" fn c_derive_epk_from_esk(
     epk_len: *mut size_t,
 ) -> *mut c_uchar {
     c_ptr_catch_result(|| {
-        let diversifier: [u8; 11] = unsafe { c_deserialize_slice(diversifier, diversifier_len) }.try_into()
-            .map_err(|_| SaplingError::caused_by("deriveEpkFromEsk: index must be an array of 11 bytes"))?;
+        let diversifier: [u8; 11] = unsafe { c_deserialize_slice(diversifier, diversifier_len) }
+            .try_into()
+            .map_err(|_| {
+                SaplingError::caused_by("deriveEpkFromEsk: index must be an array of 11 bytes")
+            })?;
         let diversifier = Diversifier(diversifier);
         let esk: jubjub::Scalar = unsafe { c_deserialize(esk, esk_len) }?;
 

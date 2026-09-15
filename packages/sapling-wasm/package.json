@@ -1,6 +1,7 @@
 {
   "name": "@tezos-x/sapling-wasm",
   "author": "Papers.ch <contact@papers.ch>",
+  "license": "MIT",
   "version": "0.9.0",
   "repository": {
     "type": "git",

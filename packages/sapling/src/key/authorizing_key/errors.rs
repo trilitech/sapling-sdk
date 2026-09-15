@@ -9,7 +9,9 @@ pub enum ProofGenerationKeyError {
 impl DetailedError for ProofGenerationKeyError {
     fn details(&self) -> String {
         match self {
-            ProofGenerationKeyError::WriteFailed => String::from("ProofGenerationKey write failed."),
+            ProofGenerationKeyError::WriteFailed => {
+                String::from("ProofGenerationKey write failed.")
+            }
             ProofGenerationKeyError::ReadFailed => String::from("ProofGenerationKey read failed."),
         }
     }
@@ -20,7 +22,7 @@ impl PartialEq for ProofGenerationKeyError {
         match (self, other) {
             (ProofGenerationKeyError::WriteFailed, ProofGenerationKeyError::WriteFailed) => true,
             (ProofGenerationKeyError::ReadFailed, ProofGenerationKeyError::ReadFailed) => true,
-            _ => false
+            _ => false,
         }
     }
 }

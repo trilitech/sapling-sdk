@@ -1,42 +1,23 @@
 #![allow(dead_code)]
 
 #[cfg(feature = "c_bindings")]
-#[macro_use] extern crate log;
+#[macro_use]
+extern crate log;
 
+#[cfg(any(feature = "c_bindings", feature = "wasm_bindings"))]
+pub(crate) use crate::state::State;
 #[cfg(feature = "c_bindings")]
 pub use c_bindings::{
-    authorizing_key::*,
-    commitment::*,
-    init::*,
-    key_agreement::*,
-    merkle_tree::*,
-    output_description::*,
-    payment_address::*,
-    proving_context::*,
-    rand::*,
-    signature::*,
-    spend_description::*,
-    spending_key::*,
-    viewing_key::*,
+    authorizing_key::*, commitment::*, init::*, key_agreement::*, merkle_tree::*,
+    output_description::*, payment_address::*, proving_context::*, rand::*, signature::*,
+    spend_description::*, spending_key::*, viewing_key::*,
 };
 #[cfg(feature = "wasm_bindings")]
 pub use wasm_bindings::{
-    authorizing_key::*,
-    commitment::*,
-    init::*,
-    key_agreement::*,
-    merkle_tree::*,
-    output_description::*,
-    payment_address::*,
-    proving_context::*,
-    rand::*,
-    signature::*,
-    spend_description::*,
-    spending_key::*,
-    viewing_key::*,
+    authorizing_key::*, commitment::*, init::*, key_agreement::*, merkle_tree::*,
+    output_description::*, payment_address::*, proving_context::*, rand::*, signature::*,
+    spend_description::*, spending_key::*, viewing_key::*,
 };
-
-use crate::state::State;
 
 #[cfg(feature = "c_bindings")]
 mod c_bindings;

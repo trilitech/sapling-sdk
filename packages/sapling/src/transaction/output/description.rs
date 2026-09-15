@@ -1,6 +1,6 @@
 use std::convert::TryInto;
-use std::io::{Read, Write};
 use std::io;
+use std::io::{Read, Write};
 
 use bellman::groth16::Parameters;
 use bls12_381::Bls12;
@@ -11,25 +11,29 @@ use zcash_primitives::keys::OutgoingViewingKey;
 use zcash_primitives::memo::MemoBytes;
 use zcash_primitives::note_encryption::SaplingNoteEncryption;
 use zcash_primitives::primitives::{Diversifier, Note, PaymentAddress};
-use zcash_primitives::transaction::components::{GROTH_PROOF_SIZE, OutputDescription};
+use zcash_primitives::transaction::components::{OutputDescription, GROTH_PROOF_SIZE};
 use zcash_proofs::sapling::SaplingProvingContext;
 
 use crate::common::errors::{CausedBy, SaplingError};
 use crate::common::traits::Serializable;
 use crate::transaction::note::create_note;
 use crate::transaction::output::errors::OutputDescriptionError;
-use crate::transaction::output::OutputDetails;
 use crate::transaction::output::proof::create_output_proof;
+use crate::transaction::output::OutputDetails;
 use crate::transaction::proof::prepare_zkproof;
 
 impl Serializable<Vec<u8>, SaplingError> for OutputDescription {
     fn deserialize(serialized: Vec<u8>) -> Result<Self, SaplingError> {
-        OutputDescription::read(&mut &serialized[..]).map_err(OutputDescriptionError::ReadFailed).map_err(SaplingError::caused_by)
+        OutputDescription::read(&mut &serialized[..])
+            .map_err(OutputDescriptionError::ReadFailed)
+            .map_err(SaplingError::caused_by)
     }
 
     fn serialize(&self) -> Result<Vec<u8>, SaplingError> {
         let mut bytes: Vec<u8> = vec![];
-        self.write(&mut bytes).map_err(OutputDescriptionError::WriteFailed).map_err(SaplingError::caused_by)?;
+        self.write(&mut bytes)
+            .map_err(OutputDescriptionError::WriteFailed)
+            .map_err(SaplingError::caused_by)?;
 
         Ok(bytes)
     }
@@ -73,11 +77,7 @@ impl PartialOutputDescription {
         let mut zkproof = [0u8; GROTH_PROOF_SIZE];
         reader.read_exact(&mut zkproof)?;
 
-        Ok(PartialOutputDescription {
-            cv,
-            cmu,
-            zkproof,
-        })
+        Ok(PartialOutputDescription { cv, cmu, zkproof })
     }
 
     pub fn write<W: Write>(&self, mut writer: W) -> io::Result<()> {
@@ -89,12 +89,16 @@ impl PartialOutputDescription {
 
 impl Serializable<Vec<u8>, SaplingError> for PartialOutputDescription {
     fn deserialize(serialized: Vec<u8>) -> Result<Self, SaplingError> {
-        PartialOutputDescription::read(&mut &serialized[..]).map_err(OutputDescriptionError::ReadFailed).map_err(SaplingError::caused_by)
+        PartialOutputDescription::read(&mut &serialized[..])
+            .map_err(OutputDescriptionError::ReadFailed)
+            .map_err(SaplingError::caused_by)
     }
 
     fn serialize(&self) -> Result<Vec<u8>, SaplingError> {
         let mut bytes: Vec<u8> = vec![];
-        self.write(&mut bytes).map_err(OutputDescriptionError::WriteFailed).map_err(SaplingError::caused_by)?;
+        self.write(&mut bytes)
+            .map_err(OutputDescriptionError::WriteFailed)
+            .map_err(SaplingError::caused_by)?;
 
         Ok(bytes)
     }
@@ -106,7 +110,7 @@ pub fn prepare_output_description(
     output_details: OutputDetails,
     rcm: jubjub::Scalar,
     memo: Option<&[u8]>,
-    proving_key: &Parameters<Bls12>
+    proving_key: &Parameters<Bls12>,
 ) -> Result<OutputDescription, SaplingError> {
     let note = create_note(&output_details.to_address, output_details.value, rcm)?;
     let memo = get_memo(memo)?;
@@ -139,7 +143,7 @@ pub fn prepare_partial_output_description(
     output_details: OutputDetails,
     rcm: jubjub::Scalar,
     esk: jubjub::Scalar,
-    proving_key: &Parameters<Bls12>
+    proving_key: &Parameters<Bls12>,
 ) -> Result<PartialOutputDescription, SaplingError> {
     let note = create_note(&output_details.to_address, output_details.value, rcm)?;
 
@@ -148,16 +152,15 @@ pub fn prepare_partial_output_description(
 
     let zkproof = prepare_zkproof(proof)?;
 
-    let output_description = PartialOutputDescription {
-        cv,
-        cmu,
-        zkproof,
-    };
+    let output_description = PartialOutputDescription { cv, cmu, zkproof };
 
     Ok(output_description)
 }
 
-pub fn derive_epk(diversifier: Diversifier, esk: jubjub::Scalar) -> Result<jubjub::SubgroupPoint, SaplingError> {
+pub fn derive_epk(
+    diversifier: Diversifier,
+    esk: jubjub::Scalar,
+) -> Result<jubjub::SubgroupPoint, SaplingError> {
     let g_d = diversifier.g_d().ok_or_else(SaplingError::new)?;
     let epk = g_d * esk;
 
@@ -167,23 +170,28 @@ pub fn derive_epk(diversifier: Diversifier, esk: jubjub::Scalar) -> Result<jubju
 fn get_memo(memo: Option<&[u8]>) -> Result<MemoBytes, SaplingError> {
     match memo {
         Some(m) => MemoBytes::from_bytes(m).map_err(|err| SaplingError::caused_by(err.to_string())),
-        None => Ok(MemoBytes::empty())
+        None => Ok(MemoBytes::empty()),
     }
 }
 
-fn create_encryptor(ovk: OutgoingViewingKey, note: &Note, to: &PaymentAddress, memo: MemoBytes) -> Result<SaplingNoteEncryption<OsRng>, SaplingError> {
+fn create_encryptor(
+    ovk: OutgoingViewingKey,
+    note: &Note,
+    to: &PaymentAddress,
+    memo: MemoBytes,
+) -> Result<SaplingNoteEncryption<OsRng>, SaplingError> {
     let rng = OsRng;
-    let encryptor = SaplingNoteEncryption::new(
-        Some(ovk),
-        note.clone(),
-        to.clone(),
-        memo,
-        rng,
-    );
+    let encryptor = SaplingNoteEncryption::new(Some(ovk), note.clone(), to.clone(), memo, rng);
 
     Ok(encryptor)
 }
 
-fn get_epk(encryptor: &SaplingNoteEncryption<OsRng>) -> Result<jubjub::ExtendedPoint, SaplingError> {
-    encryptor.epk().clone().try_into().map_err(|_| SaplingError::new())
+fn get_epk(
+    encryptor: &SaplingNoteEncryption<OsRng>,
+) -> Result<jubjub::ExtendedPoint, SaplingError> {
+    encryptor
+        .epk()
+        .clone()
+        .try_into()
+        .map_err(|_| SaplingError::new())
 }

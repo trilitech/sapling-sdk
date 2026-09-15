@@ -1,8 +1,10 @@
+use crate::c_init_lib;
 use libc::{c_char, c_uchar, size_t};
 use zcash_primitives::zip32::ExtendedSpendingKey;
-use crate::c_init_lib;
 
-use crate::common::utils::c_utils::{c_deserialize_slice, c_deserialize_str, c_serialize_res, c_ptr_catch_result};
+use crate::common::utils::c_utils::{
+    c_deserialize_slice, c_deserialize_str, c_ptr_catch_result, c_serialize_res,
+};
 use crate::key::SaplingKey;
 
 #[no_mangle]

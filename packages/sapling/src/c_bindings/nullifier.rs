@@ -1,10 +1,10 @@
+use crate::c_init_lib;
 use libc::{c_uchar, size_t};
 use zcash_primitives::primitives::PaymentAddress;
 use zcash_primitives::zip32::ExtendedFullViewingKey;
-use crate::c_init_lib;
 
 use crate::common::errors::SaplingError;
-use crate::common::utils::c_utils::{c_get_result_res, c_deserialize, c_ptr_catch_result};
+use crate::common::utils::c_utils::{c_deserialize, c_get_result_res, c_ptr_catch_result};
 use crate::transaction::compute_nullifier;
 
 #[no_mangle]

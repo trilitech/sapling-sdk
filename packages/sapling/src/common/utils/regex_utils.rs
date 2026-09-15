@@ -15,15 +15,14 @@ mod tests {
         let test_data = vec![
             (vec!["a"], "[a]"),
             (vec!["a", "b"], "[ab]"),
-            (vec!["a-z", "A-Z"], "[a-zA-Z]")
+            (vec!["a-z", "A-Z"], "[a-zA-Z]"),
         ];
 
-        let actual_expected = test_data.iter()
-            .map(|(chars, expected)| {
-                let actual = contains_chars_re(chars);
+        let actual_expected = test_data.iter().map(|(chars, expected)| {
+            let actual = contains_chars_re(chars);
 
-                (actual, expected)
-            });
+            (actual, expected)
+        });
 
         for (actual, expected) in actual_expected {
             assert_eq!(&actual, expected);
@@ -35,15 +34,14 @@ mod tests {
         let test_data = vec![
             (vec!["a"], "[^a]"),
             (vec!["a", "b"], "[^ab]"),
-            (vec!["a-z", "A-Z"], "[^a-zA-Z]")
+            (vec!["a-z", "A-Z"], "[^a-zA-Z]"),
         ];
 
-        let actual_expected = test_data.iter()
-            .map(|(chars, expected)| {
-                let actual = not_contains_chars_re(chars);
+        let actual_expected = test_data.iter().map(|(chars, expected)| {
+            let actual = not_contains_chars_re(chars);
 
-                (actual, expected)
-            });
+            (actual, expected)
+        });
 
         for (actual, expected) in actual_expected {
             assert_eq!(&actual, expected);

@@ -1,7 +1,7 @@
 use wasm_bindgen::prelude::*;
 
-use crate::State;
 use crate::transaction::prepare_proof_parameters;
+use crate::State;
 
 #[wasm_bindgen(js_name = "initParams")]
 pub fn wasm_init_params(spend_params: &[u8], output_params: &[u8]) {

@@ -3,6 +3,7 @@ name = "sapling"
 version = "0.9.0"
 authors = ["Papers.ch <contact@papers.ch>"]
 edition = "2018"
+license = "MIT"
 
 [lib]
 crate-type = ["cdylib", "rlib", "staticlib"]

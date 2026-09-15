@@ -1,5 +1,5 @@
-use zcash_proofs::sapling::SaplingProvingContext;
 use crate::c_init_lib;
+use zcash_proofs::sapling::SaplingProvingContext;
 
 use crate::common::utils::c_utils::{c_drop_reference, c_reference};
 

@@ -1,8 +1,8 @@
+use crate::c_init_lib;
 use libc::{c_uchar, size_t};
 use zcash_primitives::primitives::PaymentAddress;
-use crate::c_init_lib;
 
-use crate::common::utils::c_utils::{c_deserialize, c_serialize_res, c_ptr_catch_result};
+use crate::common::utils::c_utils::{c_deserialize, c_ptr_catch_result, c_serialize_res};
 use crate::transaction::create_note;
 
 #[no_mangle]

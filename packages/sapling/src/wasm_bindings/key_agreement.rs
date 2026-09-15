@@ -12,6 +12,6 @@ pub fn wasm_key_agreement(p: &[u8], sk: &[u8]) -> Result<Vec<u8>, JsValue> {
     let sk: jubjub::Scalar = js_deserialize(sk)?;
 
     let ka = sapling_ka_agree(&sk, &p);
-    
+
     js_serialize(ka)
 }

@@ -29,7 +29,7 @@ impl CausedBy<String> for SaplingError {
     }
 }
 
-impl <T: DetailedError> CausedBy<T> for SaplingError {
+impl<T: DetailedError> CausedBy<T> for SaplingError {
     fn caused_by(cause: T) -> SaplingError {
         SaplingError(Some(cause.details()))
     }
@@ -39,7 +39,7 @@ impl fmt::Display for SaplingError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self.0 {
             Some(cause) => write!(f, "sapling error, {}", cause),
-            None => write!(f, "sapling error")
+            None => write!(f, "sapling error"),
         }
     }
 }

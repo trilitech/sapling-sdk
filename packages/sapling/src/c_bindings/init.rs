@@ -8,9 +8,9 @@ pub use android_logger::{Config, FilterBuilder};
 use log::LevelFilter;
 
 #[cfg(target_os = "ios")]
-use oslog::OsLogger;
-#[cfg(target_os = "ios")]
 use log::LevelFilter;
+#[cfg(target_os = "ios")]
+use oslog::OsLogger;
 
 use crate::common::utils::c_utils::{c_bool_catch, c_deserialize_slice};
 use crate::state::State;
@@ -27,8 +27,10 @@ pub extern "C" fn c_init_params(
 
     c_bool_catch(|| {
         if State::proof_params().is_err() {
-            let spend_params: &[u8] = unsafe { c_deserialize_slice(spend_params, spend_params_len) };
-            let output_params: &[u8] = unsafe { c_deserialize_slice(output_params, output_params_len) };
+            let spend_params: &[u8] =
+                unsafe { c_deserialize_slice(spend_params, spend_params_len) };
+            let output_params: &[u8] =
+                unsafe { c_deserialize_slice(output_params, output_params_len) };
 
             State::set_proof_params(prepare_proof_parameters(spend_params, output_params));
         }
@@ -47,7 +49,7 @@ fn init_logger() {
     android_logger::init_once(
         Config::default()
             .with_tag("Sapling")
-            .with_max_level(LevelFilter::max())
+            .with_max_level(LevelFilter::max()),
     );
 }
 
@@ -60,4 +62,5 @@ fn init_logger() {
 }
 
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
-fn init_logger() { /* no action */ }
+fn init_logger() { /* no action */
+}

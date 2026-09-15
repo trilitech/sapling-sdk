@@ -1,8 +1,8 @@
+use crate::c_init_lib;
 use libc::{c_uchar, size_t};
 use zcash_primitives::note_encryption::sapling_ka_agree;
-use crate::c_init_lib;
 
-use crate::common::utils::c_utils::{c_deserialize, c_serialize, c_ptr_catch_result};
+use crate::common::utils::c_utils::{c_deserialize, c_ptr_catch_result, c_serialize};
 
 #[no_mangle]
 pub extern "C" fn c_key_agreement(

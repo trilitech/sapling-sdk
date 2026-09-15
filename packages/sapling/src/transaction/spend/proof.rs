@@ -27,7 +27,7 @@ pub fn create_spend_proof(
     ar: jubjub::Scalar,
     anchor: bls12_381::Scalar,
     merkle_path: MerklePath<Node>,
-    parameters: &SpendParameters
+    parameters: &SpendParameters,
 ) -> Result<(Proof<Bls12>, jubjub::ExtendedPoint, PublicKey), SaplingError> {
     let rseed = Rseed::BeforeZip212(rcm);
 
@@ -40,6 +40,8 @@ pub fn create_spend_proof(
         anchor,
         merkle_path,
         parameters.proving_key,
-        parameters.verifying_key
-    ).map_err(|_| SpendDescriptionError::CreateSpendProofFailed).map_err(SaplingError::caused_by)
+        parameters.verifying_key,
+    )
+    .map_err(|_| SpendDescriptionError::CreateSpendProofFailed)
+    .map_err(SaplingError::caused_by)
 }
