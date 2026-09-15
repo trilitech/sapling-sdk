@@ -102,13 +102,13 @@ function fix_versions () {
   android_latest=$(find_latest format_android_beta)
   if [[ "$ANDROID_VERSION" != "$android_latest" ]]; then
     echo "  android $ANDROID_VERSION -> $android_latest"
-    sed -i "" -e "s/versionName \"$ANDROID_VERSION\"/versionName \"$android_latest\"/g" "$ANDROID_PATH/app/build.gradle"
+    sed -i.bak -e "s/versionName \"$ANDROID_VERSION\"/versionName \"$android_latest\"/g" "$ANDROID_PATH/app/build.gradle" && rm -f "$ANDROID_PATH/app/build.gradle.bak"
   fi
 
   core_latest=$(find_latest format_core_beta)
   if [[ "$CORE_VERSION" != "$core_latest" ]]; then
     echo "  core $CORE_VERSION -> $core_latest"
-    sed -i "" -e "s/version = \"$CORE_VERSION\"/version = \"$core_latest\"/1" "$CORE_PATH/Cargo.toml"
+    sed -i.bak -e "s/version = \"$CORE_VERSION\"/version = \"$core_latest\"/1" "$CORE_PATH/Cargo.toml" && rm -f "$CORE_PATH/Cargo.toml.bak"
   fi
 
   js_latest=$(find_latest format_js_beta)
