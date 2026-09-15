@@ -4,6 +4,8 @@
 
 Wasm, Android and iOS wrappers around [Zcash Rust crates](https://github.com/zcash/librustzcash).
 
+This repository is a fork of [ecadlabs/sapling-wasm](https://github.com/ecadlabs/sapling-wasm), which itself was forked from the original work of the AirGap team at [airgap-it/airgap-sapling](https://github.com/airgap-it/airgap-sapling). We are grateful to both for the original implementation and foundation this project builds on.
+
 ## Project Overview
 
 The project is divided into the following packages:
@@ -90,4 +92,8 @@ Add the following dependency in your `Package.swift` file:
 ```swift
 .package(url: "https://github.com/trilitech/sapling-sdk", from: "x.y.z")
 ```
+
+## License
+
+This repository is distributed under the MIT license. See [LICENSE](./LICENSE).
 
