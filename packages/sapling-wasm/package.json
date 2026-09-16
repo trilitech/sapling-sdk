@@ -18,7 +18,8 @@
   "types": "dist/index.d.ts",
   "sourceMap": true,
   "scripts": {
-    "build": "rm -rf dist && rm -rf pkg && npx webpack --mode=development && npm link ./dist",
-    "build:prod": "rm -rf dist && rm -rf pkg && npx webpack --mode=production"
+    "build": "rm -rf dist && rm -rf pkg && npx webpack --mode=development",
+    "build:prod": "rm -rf dist && rm -rf pkg && npx webpack --mode=production",
+    "link:local": "npm link"
   }
 }
