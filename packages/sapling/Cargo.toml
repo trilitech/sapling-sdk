@@ -1,6 +1,6 @@
 [package]
 name = "sapling"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Papers.ch <contact@papers.ch>"]
 edition = "2018"
 license = "MIT"
