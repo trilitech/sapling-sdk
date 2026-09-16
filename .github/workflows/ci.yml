@@ -44,6 +44,9 @@ jobs:
       - name: Install wasm-pack
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
+      - name: Update npm
+        run: npm install -g npm@latest
+
       - name: Install JS dependencies
         run: npm ci
 
@@ -91,6 +94,9 @@ jobs:
       - name: Install wasm-pack
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
+      - name: Update npm
+        run: npm install -g npm@latest
+
       - name: Install JS dependencies
         run: npm ci
 
@@ -118,6 +124,9 @@ jobs:
 
       - name: Install wasm-pack
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Update npm
+        run: npm install -g npm@latest
 
       - name: Install JS dependencies
         run: npm ci
